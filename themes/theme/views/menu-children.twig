@@ -1,0 +1,50 @@
+{% if items %}
+
+<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+    <ul class="navbar-nav mr-auto">
+
+    
+        {% for item in items %}
+            {% if item.current == true	%}
+                {% set current = 'active' %}
+            {% endif %}
+
+            {% if item.children|length > 0 %}
+                {% set hasChildren = true %}
+                {% set dropdown = 'dropdown' %}
+            {% endif %}
+
+            <li class="nav-item dropdown-item {{ current }} {{dropdown}}">
+                <a 
+
+                {% if hasChildren == true %}
+
+                    class="nav-link dropdown-toggle" 
+                    href="#"
+                    role="button" 
+                    id="navbarDropdown"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+
+                {% else %}
+
+                    class="nav-link" 
+                    href="{{ item.link }}"
+
+                {% endif %}
+
+                >{{ item.title }}</a>
+                {% set current = '' %}
+                {% set hasChildren = false %}
+                {% set dropdown = '' %}
+                {% include "menu-children.twig" with {'items': item.children, 'submenu': true} %}
+            </li>
+
+
+            
+        {% endfor %}
+    </ul>
+</div>
+
+{% endif %}
